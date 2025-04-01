@@ -1,12 +1,12 @@
 "use client";
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+
 
 export default function NewChild() {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [daysPresent, setDaysPresent] = useState([]);
-  const router = useRouter();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,7 +15,8 @@ export default function NewChild() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, age: parseInt(age), daysPresent }),
     });
-    router.refresh();
+    window.location.reload();
+
   };
 
   return (

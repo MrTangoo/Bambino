@@ -20,9 +20,18 @@ export default function Home() {
   }, []);
 
   // Fonction pour supprimer un enfant
-  const deleteChild = (childId) => {
-    fetch(`/api/children/?id=${childId}`, { method: 'DELETE' });
-    router.refresh();
+  const deleteChild = async (childId) => {
+    try {
+      const response = await fetch(`/api/children/?id=${childId}`, { method: 'DELETE' });
+  
+      if (response.ok) {
+        setChildren((prevChildren) => prevChildren.filter((child) => child.id !== childId));
+      } else {
+        console.error("Erreur lors de la suppression");
+      }
+    } catch (error) {
+      console.error("Erreur réseau :", error);
+    }
   };
 
   return (
