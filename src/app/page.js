@@ -27,7 +27,7 @@ export default function Home() {
 
   return (
     <div className="h-screen flex flex-col md:flex-row p-6 bg-gradient-to-r from-gray-800 via-blue-700 to-gray-900">
-      <div className="flex-1 bg-white p-6 rounded-lg shadow-xl overflow-hidden h-fit">
+      <div className="flex-1 bg-white p-6 rounded-lg shadow-xl overflow-hidden h-fit md:mr-6">
         <h1 className="text-4xl font-bold text-center text-gray-800 md:mb-8">Liste des enfants</h1>
         <div className="bg-white p-6 rounded-lg mb-8 md:max-h-[80vh] max-h-[44vh] overflow-y-auto">
           {isLoading ? (
