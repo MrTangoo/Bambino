@@ -79,7 +79,7 @@ export default function Home() {
       {/* Section principale de la liste des enfants */}
       <div className="flex-1 bg-white p-6 rounded-lg shadow-xl overflow-hidden h-fit md:mr-6">
         <h1 className="text-4xl font-bold text-center text-gray-800 md:mb-8">Liste des enfants</h1>
-        <div className="bg-white p-6 rounded-lg mb-8 md:max-h-[80vh] max-h-[44vh] overflow-y-auto">
+        <div className="bg-white p-6 rounded-lg mb-8 md:max-h-[78vh] max-h-[44vh] overflow-y-auto">
           {/* Affichage de l'état de chargement ou des enfants */}
           {isLoading ? (
             <div role="status" className='flex justify-center items-center h-full'>
