@@ -23,7 +23,7 @@ export default function LoginPage() {
       setError("Email ou mot de passe incorrect.");
       setLoading(false);
     } else {
-      window.location.href = "/dashboard"; // Redirige vers la liste des enfants après la connexion
+      window.location.href = "./dashboard"; // Redirige vers la liste des enfants après la connexion
     }
   };
 
