@@ -38,7 +38,7 @@ export default function NewChild() {
 
       if (!res.ok) throw new Error("Erreur lors de l'ajout.");
 
-      window.location.href = "/"; // Redirige vers la page d'accueil après l'ajout
+      window.location.href = "/dashboard"; // Redirige vers la liste des enfants après l'ajout
     } catch (err) {
       setError(err.message);
     } finally {
