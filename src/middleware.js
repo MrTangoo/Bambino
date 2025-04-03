@@ -7,5 +7,5 @@ export default withAuth({
 });
 
 export const config = {
-  matcher: ["/","/new"], // Redirige vers `/login` si non connecté
+  matcher: ["/dashboard","/new"], // Redirige vers `/login` si non connecté
 };
