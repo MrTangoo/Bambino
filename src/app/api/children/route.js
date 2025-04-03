@@ -7,6 +7,8 @@ export async function GET() {
   try {
     // Récupérer tous les enfants depuis la base de données
     const children = await prisma.child.findMany();
+    // trier les enfants par nom
+    children.sort((a, b) => a.name.localeCompare(b.name));
     // Retourner une réponse avec le statut 200 et la liste des enfants au format JSON
     return new Response(JSON.stringify(children), { status: 200 });
   } catch (error) {
