@@ -16,7 +16,7 @@ const ChildItem = ({ child, onDelete }) => (
       <motion.button
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.90 }}
-        className="text-yellow-400 hover:text-yellow-700 transition"
+        className="text-yellow-400 hover:text-yellow-700 transition-100"
         aria-label="Modifier"
       >
         <SquarePen size={20} />
@@ -25,7 +25,7 @@ const ChildItem = ({ child, onDelete }) => (
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.90 }}
         onClick={() => onDelete(child.id)}
-        className="text-red-500 hover:text-red-700 transition"
+        className="text-red-500 hover:text-red-700 transition-100"
         aria-label="Supprimer"
       >
         <Trash2 size={20} />
