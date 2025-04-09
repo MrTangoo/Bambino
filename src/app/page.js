@@ -5,19 +5,19 @@ import { useSession } from "next-auth/react";
 const titleMotion = {
   initial: { opacity: 0, y: -50 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 1, ease: 'easeOut' }
+  transition: { duration: 0.5, ease: 'easeOut' }
 };
 
 const descriptionMotion = {
   initial: { opacity: 0, y: 30 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 1, ease: 'easeOut', delay: 0.2 }
+  transition: { duration: 0.5, ease: 'easeOut', delay: 0.2 }
 };
 
 const buttonMotion = {
   initial: { opacity: 0, scale: 0 },
   animate: { opacity: 1, scale: 1 },
-  transition: { duration: 0.5, ease: "backOut", delay: 1.4 },
+  transition: { duration: 0.5, ease: "backOut", delay: 1 },
   whileHover: { scale: 1.1 }
 };
 
@@ -49,7 +49,7 @@ export default function HomePage() {
             className="bg-gradient-to-br from-green-400 to-blue-600 text-transparent bg-clip-text"  
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, ease: "backOut", delay: 1.1 }}
+            transition={{ duration: 0.5, ease: "backOut", delay: 0.6 }}
             whileHover={{ scale: 1.1 }}
           >
             +
