@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { SquarePen, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 const ChildItem = ({ child, onDelete }) => (
   <li className="bg-gray-800 p-5 rounded-xl flex justify-between items-start hover:bg-gray-700 transition">
@@ -12,15 +12,7 @@ const ChildItem = ({ child, onDelete }) => (
         Présent : <span className="text-green-400 font-medium">{child.daysPresent.join(", ")}</span>
       </p>
     </div>
-    <div className="flex space-x-3 mt-1">
-      <motion.button
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.90 }}
-        className="text-yellow-400 hover:text-yellow-700 transition-100"
-        aria-label="Modifier"
-      >
-        <SquarePen size={20} />
-      </motion.button>
+    <div className="flex space-x-3 mt-4">
       <motion.button
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.90 }}
