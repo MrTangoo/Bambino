@@ -41,7 +41,7 @@ export default function HomePage() {
       <div className="flex flex-col items-center justify-center h-screen px-4">
         {/* Title Animation */}
         <motion.h1 className="text-5xl md:text-9xl font-bold mt-4 text-center" {...titleMotion}>
-          Bienvenue sur
+          Bienvenue sur test
           <span> Bambino</span>
 
           {/* Animated "+" with rotation and pop effect */}
