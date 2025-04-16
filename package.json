@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "prisma generate && next build",
+    "build": "prisma generate && npm run test && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "vitest",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
@@ -23,9 +25,12 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@vitest/ui": "^3.1.1",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
     "prisma": "^6.5.0",
-    "tailwindcss": "^4"
+    "tailwindcss": "^4",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.1.1"
   }
 }
