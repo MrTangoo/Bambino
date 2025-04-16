@@ -1,81 +1,188 @@
-import { PrismaClient } from '@prisma/client';
+import { getAllChildren, createChild, updateChild, deleteChild } from '@lib/children';
 
-const prisma = new PrismaClient();
-
-// Requête GET pour récupérer tous les enfants
+/**
+ * @swagger
+ * /api/children:
+ *   get:
+ *     summary: Récupérer tous les enfants
+ *     description: Retourne une liste triée d'enfants depuis la base de données.
+ *     responses:
+ *       200:
+ *         description: Liste des enfants récupérée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Child'
+ *       500:
+ *         description: Erreur serveur lors de la récupération
+ */
 export async function GET() {
   try {
-    // Récupérer tous les enfants depuis la base de données
-    const children = await prisma.child.findMany();
-    // trier les enfants par nom
-    children.sort((a, b) => a.name.localeCompare(b.name));
-    // Retourner une réponse avec le statut 200 et la liste des enfants au format JSON
+    const children = await getAllChildren();
     return new Response(JSON.stringify(children), { status: 200 });
   } catch (error) {
-    // En cas d'erreur pendant la récupération, retourner le statut 500 avec un message d'erreur
     return new Response('Erreur lors de la récupération des enfants', { status: 500 });
   }
 }
 
-// Requête POST pour créer un nouvel enfant
+/**
+ * @swagger
+ * /api/children:
+ *   post:
+ *     summary: Créer un nouvel enfant
+ *     description: Ajoute un enfant dans la base de données avec nom, âge et jours présents.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/NewChild'
+ *     responses:
+ *       201:
+ *         description: Enfant créé avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Child'
+ *       500:
+ *         description: Erreur serveur lors de la création
+ */
 export async function POST(request) {
-  const { name, age, daysPresent } = await request.json();
-  
   try {
-    // Créer un nouvel enfant dans la base de données
-    const newChild = await prisma.child.create({
-      data: { name, age, daysPresent },
-    });
-    // Retourner une réponse avec le statut 201 (Créé) et les données du nouvel enfant
+    const data = await request.json();
+    const newChild = await createChild(data);
     return new Response(JSON.stringify(newChild), { status: 201 });
   } catch (error) {
-    // En cas d'erreur, retourner une réponse avec le statut 500
     return new Response('Erreur lors de la création de l\'enfant', { status: 500 });
   }
 }
 
-// Requête PATCH pour mettre à jour un enfant
+/**
+ * @swagger
+ * /api/children:
+ *   patch:
+ *     summary: Mettre à jour un enfant
+ *     description: Met à jour les informations d’un enfant existant via son ID passé en query param.
+ *     parameters:
+ *       - name: id
+ *         in: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UpdateChild'
+ *     responses:
+ *       200:
+ *         description: Enfant mis à jour avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Child'
+ *       400:
+ *         description: ID manquant
+ *       404:
+ *         description: Enfant non trouvé
+ */
 export async function PATCH(request) {
   const url = new URL(request.url);
-  const id = url.searchParams.get('id'); // Récupérer l'ID depuis la query string
+  const id = url.searchParams.get('id');
   const updateData = await request.json();
 
   if (!id) {
-    // Si l'ID est manquant, retourner une réponse avec le statut 400 (Bad Request)
     return new Response('ID est requis', { status: 400 });
   }
 
   try {
-    // Mettre à jour l'enfant avec l'ID fourni dans la base de données
-    const updatedChild = await prisma.child.update({
-      where: { id },
-      data: updateData,
-    });
-    // Retourner une réponse avec le statut 200 et les données de l'enfant mis à jour
+    const updatedChild = await updateChild(id, updateData);
     return new Response(JSON.stringify(updatedChild), { status: 200 });
   } catch (error) {
-    // Si l'enfant n'est pas trouvé, retourner une réponse avec le statut 404
     return new Response('Enfant non trouvé', { status: 404 });
   }
 }
 
-// Requête DELETE pour supprimer un enfant
+/**
+ * @swagger
+ * /api/children:
+ *   delete:
+ *     summary: Supprimer un enfant
+ *     description: Supprime un enfant de la base de données via son ID passé en query param.
+ *     parameters:
+ *       - name: id
+ *         in: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Enfant supprimé avec succès (No Content)
+ *       400:
+ *         description: ID manquant
+ *       404:
+ *         description: Enfant non trouvé
+ */
 export async function DELETE(request) {
   const url = new URL(request.url);
-  const id = url.searchParams.get('id'); // Récupérer l'ID depuis la query string
+  const id = url.searchParams.get('id');
 
   if (!id) {
-    // Si l'ID est manquant, retourner une réponse avec le statut 400 (Bad Request)
     return new Response('ID est requis', { status: 400 });
   }
 
   try {
-    // Supprimer l'enfant avec l'ID fourni dans la base de données
-    await prisma.child.delete({ where: { id } });
-    // Retourner une réponse avec le statut 204 (No Content) après la suppression
+    await deleteChild(id);
     return new Response(null, { status: 204 });
   } catch (error) {
-    // Si l'enfant n'est pas trouvé, retourner une réponse avec le statut 404
     return new Response('Enfant non trouvé', { status: 404 });
   }
 }
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Child:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *         name:
+ *           type: string
+ *         age:
+ *           type: integer
+ *         daysPresent:
+ *           type: array
+ *           items:
+ *             type: string
+ *     NewChild:
+ *       type: object
+ *       required:
+ *         - name
+ *         - age
+ *         - daysPresent
+ *       properties:
+ *         name:
+ *           type: string
+ *         age:
+ *           type: integer
+ *         daysPresent:
+ *           type: array
+ *           items:
+ *             type: string
+ *     UpdateChild:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *         age:
+ *           type: integer
+ *         daysPresent:
+ *           type: array
+ *           items:
+ *             type: string
+ */
