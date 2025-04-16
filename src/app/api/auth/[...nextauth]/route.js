@@ -3,7 +3,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
-
 const prisma = new PrismaClient();
 
 export const authOptions = {
@@ -28,7 +27,12 @@ export const authOptions = {
           throw new Error("Mot de passe incorrect");
         }
 
-        return { id: user.id, name: user.name, email: user.email };
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        };
       },
     }),
   ],
@@ -39,13 +43,21 @@ export const authOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.email = user.email;
+        token.role = user.role;
       }
+
       return token;
     },
+
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id;
-      }
+      session.user = {
+        id: token.id,
+        email: token.email,
+        name: token.name ?? null,
+        role: token.role,
+      };
+
       return session;
     },
   },
@@ -53,5 +65,4 @@ export const authOptions = {
 };
 
 const handler = NextAuth(authOptions);
-
 export { handler as GET, handler as POST };

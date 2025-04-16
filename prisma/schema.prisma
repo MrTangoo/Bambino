@@ -16,9 +16,15 @@ model Child {
 }
 
 model User {
-  id       String  @id @default(uuid())
-  name     String?
-  email    String  @unique
-  password String  // Stocke le mot de passe haché avec bcrypt
+  id        String   @id @default(uuid())
+  name      String?
+  email     String   @unique
+  password  String // Stocke le mot de passe haché avec bcrypt
+  role      Role     @default(USER)
   createdAt DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
 }
