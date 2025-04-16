@@ -4,9 +4,15 @@
 
 1. Configure the environment variables inside the `.env` file.
 
-```
-// The url of the database
+```bash
+# The url of the database
 DATABASE_URL="postgres://user:password@localhost:5432/database"
+
+# Secret key used by NextAuth to sign JWT tokens and manage sessions.
+NEXTAUTH_SECRET="une_clé_secrète_super_longue"
+
+# URL of your application, used for redirections and session management in NextAuth.
+NEXTAUTH_URL="http://localhost:3000"
 ```
 
 2. Install dependencies.
