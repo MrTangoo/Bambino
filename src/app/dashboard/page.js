@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { UserPlus, Printer } from "lucide-react";
 import { useRouter } from "next/navigation";
 import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import { motion } from "framer-motion";
 import ChildItem from "../components/ChildItem";
 
@@ -38,41 +39,30 @@ export default function Home() {
 
   const generatePDF = useCallback(() => {
     const doc = new jsPDF();
+
     doc.setProperties({
       title: "Liste des enfants",
     });
+
     doc.setFont("Helvetica", "normal");
     doc.setFontSize(20);
     doc.text("Liste des enfants", 105, 20, { align: "center" });
 
-    let yPosition = 35;
+    const tableData = children.map((child, index) => [
+      index + 1,
+      child.name,
+      `${child.age} ans`,
+      child.daysPresent.join(", "),
+    ]);
 
-    children.forEach((child, index) => {
-      if (yPosition > 270) {
-        doc.addPage();
-        yPosition = 20;
-      }
-
-      doc.setFontSize(14);
-      doc.setTextColor(33, 37, 41);
-      doc.text(`${index + 1}. ${child.name}`, 14, yPosition);
-
-      doc.setFontSize(12);
-
-      doc.setTextColor(60, 60, 60);
-      doc.text(`Âge : ${child.age} ans`, 14, yPosition + 6);
-
-      doc.setTextColor(60, 60, 60);
-      doc.text(`Présent : `, 14, yPosition + 12);
-
-      doc.setTextColor(0, 128, 0); // vert
-      doc.text(`${child.daysPresent.join(", ")}`, 32, yPosition + 12);
-
-      // Ligne de séparation
-      doc.setDrawColor(200);
-      doc.line(14, yPosition + 18, 195, yPosition + 18);
-
-      yPosition += 28;
+    autoTable(doc, {
+      startY: 30,
+      head: [["#", "Nom", "Âge", "Jours Présents"]],
+      body: tableData,
+      styles: { fontSize: 12 },
+      headStyles: { fillColor: [41, 98, 255] },
+      alternateRowStyles: { fillColor: [240, 240, 240] },
+      margin: { top: 30 },
     });
 
     const pdfBlob = doc.output("blob");
